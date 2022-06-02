@@ -19,8 +19,8 @@ const multiply = () => previousOperand * currentOperand;
 const divide = () => previousOperand / currentOperand;
 
 function parseOperands() {
-  previousOperand = parseInt(previousOperand);
-  currentOperand = parseInt(currentOperand);
+  previousOperand = parseFloat(previousOperand);
+  currentOperand = parseFloat(currentOperand);
 }
 
 function pushOperands() {
@@ -30,7 +30,6 @@ function pushOperands() {
 }
 
 function compute() {
-  parseOperands();
   switch (operator) {
     case "+":
       return add();
@@ -69,7 +68,8 @@ function operate() {
     // prevent NaN if user doesn't enter an operand first
     previousOperand = 0;
   }
-  currentOperand = compute(previousOperand, currentOperand);
+  parseOperands();
+  currentOperand = compute();
   sanitizeOutput();
   updateDisplay();
 }
@@ -85,11 +85,14 @@ function shrinkText() {
   }
 }
 
+function addCommaSeparators(str) {
+  return str.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+}
+
 function updateDisplay() {
   // always display something
   let newValue = currentOperand === "" ? 0 : currentOperand;
-  // add comma separators
-  display.textContent = Number(newValue).toLocaleString();
+  display.textContent = addCommaSeparators(newValue.toString());
   shrinkText();
 }
 
@@ -98,7 +101,7 @@ const clearButton = document.getElementById("clear");
 clearButton.onclick = clear;
 
 function clear() {
-  deactivateButtons();
+  disableOperatorHighlight();
   previousOperand = "";
   currentOperand = "";
   cache = null;
@@ -139,7 +142,7 @@ function equals() {
     // chain current operand if operator was pressed immediately prior to equals
     currentOperand = previousOperand;
   }
-  deactivateButtons();
+  disableOperatorHighlight();
   handleCache();
   operate();
   operator = null;
@@ -149,14 +152,14 @@ function equals() {
 const operatorButtons = calculator.querySelectorAll(".operator");
 operatorButtons.forEach((button) => {
   button.onclick = () => {
-    deactivateButtons();
+    disableOperatorHighlight();
     button.classList.add("active");
     operatorActive = true;
     setOperator(button.textContent);
   };
 });
 
-function deactivateButtons() {
+function disableOperatorHighlight() {
   if (!operatorActive) return;
   operatorButtons.forEach((button) => button.classList.remove("active"));
   operatorActive = null;
@@ -177,17 +180,35 @@ digitButtons.forEach(
   (button) => (button.onclick = () => appendDigit(button.textContent))
 );
 
+function isEmpty(operand) {
+  return operand === "" || operand === 0;
+}
+
 function appendDigit(number) {
-  deactivateButtons();
+  disableOperatorHighlight();
   // don't allow consecutive zeroes
   if (currentOperand === "0" && number == 0) return;
-  // maximum limit to number of visible characters
-  if (currentOperand.length === OPERAND_MAX_LENGTH) return;
+  if (currentOperand.replace(".", "").length === OPERAND_MAX_LENGTH) return;
   // overwrite zero if it's the starting number
-  if (currentOperand == 0) {
+  if (isEmpty(currentOperand)) {
     currentOperand = number.toString();
   } else {
     currentOperand += number;
+  }
+  updateDisplay();
+}
+
+const decimalButton = document.getElementById("decimal");
+decimalButton.onclick = appendDecimal;
+
+function appendDecimal() {
+  disableOperatorHighlight();
+  if (currentOperand.length > OPERAND_MAX_LENGTH - 1) return;
+  if (currentOperand.includes(".")) return;
+  if (isEmpty(currentOperand)) {
+    currentOperand = "0.";
+  } else {
+    currentOperand += ".";
   }
   updateDisplay();
 }
