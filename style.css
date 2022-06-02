@@ -98,6 +98,11 @@ footer .icons {
   background-color: #f3c996;
 }
 
+.operator.active {
+  background-color: white;
+  color: #f2a33c;
+}
+
 .special {
   background-color: #a6a5a6;
   color: #000;
@@ -112,8 +117,4 @@ footer .icons {
   text-align: left;
   text-indent: 29px;
   width: 150px;
-}
-
-.bold {
-  font-weight: bold;
 }
