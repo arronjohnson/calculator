@@ -40,6 +40,10 @@ button {
   width: 70px;
 }
 
+button:hover {
+  background-color: #737373;
+}
+
 header {
   margin: 16px 0;
 }
@@ -90,13 +94,21 @@ footer .icons {
   font-size: 1.7rem;
 }
 
+.operator:hover {
+  background-color: #f3c996;
+}
+
 .special {
   background-color: #a6a5a6;
   color: #000;
 }
 
+.special:hover {
+  background-color: #d9d9d9;
+}
+
 #zero {
-  border-radius: 20px;
+  border-radius: 50px;
   text-align: left;
   text-indent: 29px;
   width: 150px;
