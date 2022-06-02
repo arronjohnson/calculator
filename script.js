@@ -106,6 +106,15 @@ function clear() {
   updateDisplay();
 }
 
+const deleteButton = document.getElementById("delete");
+deleteButton.onclick = deleteLastDigit;
+
+function deleteLastDigit() {
+  if (currentOperand.length < 2) return;
+  currentOperand = currentOperand.toString().slice(0, -1);
+  updateDisplay();
+}
+
 /* OPERATORS */
 const equalsButton = document.getElementById("equals");
 equalsButton.onclick = equals;
