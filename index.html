@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Calculator</title>
   <link rel="stylesheet" href="style.css">
-  <script src="script.js"></script>
+  <script src="script.js" defer></script>
   <script src="https://kit.fontawesome.com/185f24df6a.js"
     crossorigin="anonymous"></script>
 </head>
@@ -15,9 +15,9 @@
     <div class="calculator">
       <div class="display">0</div>
       <div class="row">
-        <button class="special">AC</button>
-        <button class="special bold">⁺∕₋</button>
-        <button class="special">%</button>
+        <button class="special" id="clear">AC</button>
+        <button class="special bold" id="plusminus">⁺∕₋</button>
+        <button class="special" id="percent">%</button>
         <button class="operator">÷</button>
       </div>
       <div class="row">
@@ -40,8 +40,8 @@
       </div>
       <div class="row">
         <button class="digit" id="zero">0</button>
-        <button class="period">.</button>
-        <button class="operator">=</button>
+        <button id="period">.</button>
+        <button id="equals">=</button>
       </div>
     </div>
   </main>
