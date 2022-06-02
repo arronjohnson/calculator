@@ -2,6 +2,7 @@
 
 * {
   box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
   margin: 0;
   padding: 0;
 }
@@ -12,9 +13,8 @@ body {
 }
 
 body {
+  align-items: center;
   display: flex;
-  font-family: "Roboto", sans-serif;
-  font-size: 18px;
   flex-direction: column;
   justify-content: center;
 }
@@ -28,17 +28,80 @@ a:hover {
   color: #3689fc;
 }
 
+button {
+  background-color: #333;
+  border: 0;
+  border-radius: 50%;
+  box-sizing: initial;
+  color: #fff;
+  font-size: 1.5rem;
+  height: 70px;
+  margin: 5px;
+  width: 70px;
+}
+
 header {
   margin: 16px 0;
 }
 
+main {
+  background-color: #000;
+  border-radius: 12px;
+  margin-bottom: 32px;
+  padding: 12px 0;
+}
+
 footer {
   font-size: 1.25rem;
-  margin: 16px 0;
   text-align: center;
 }
 
 footer .icons {
   font-size: 2.5rem;
   margin-bottom: 8px;
+}
+
+.calculator {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 600px;
+  justify-content: flex-end;
+  width: 340px;
+}
+
+.display {
+  align-items: flex-end;
+  color: #fff;
+  display: flex;
+  font-size: 3.2rem;
+  height: 150px;
+  justify-content: flex-end;
+  margin-bottom: 16px;
+  width: 270px;
+}
+
+.row {
+  display: flex;
+}
+
+.operator {
+  background-color: #f2a33c;
+  font-size: 1.7rem;
+}
+
+.special {
+  background-color: #a6a5a6;
+  color: #000;
+}
+
+#zero {
+  border-radius: 20px;
+  text-align: left;
+  text-indent: 29px;
+  width: 150px;
+}
+
+.bold {
+  font-weight: bold;
 }
