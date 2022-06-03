@@ -37,6 +37,7 @@ button {
   font-size: 1.5rem;
   height: 70px;
   margin: 5px;
+  user-select: none;
   width: 70px;
 }
 
@@ -63,6 +64,7 @@ footer {
 footer .icons {
   font-size: 2.5rem;
   margin-bottom: 8px;
+  user-select: none;
 }
 
 .calculator {
@@ -71,6 +73,7 @@ footer .icons {
   flex-direction: column;
   height: 600px;
   justify-content: flex-end;
+  touch-action: none;
   width: 340px;
 }
 
@@ -94,12 +97,12 @@ footer .icons {
 }
 
 .operator {
-  background-color: #f2a33c;
+  background-color: hwb(34 23% 5%);
   font-size: 1.7rem;
 }
 
 .operator:hover {
-  background-color: #f3c996;
+  background-color: hwb(33 59% 5%);
 }
 
 .operator.active {

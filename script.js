@@ -3,12 +3,40 @@ const NUMBER_MAX = 999999999;
 const OPERAND_MAX_LENGTH = 8;
 
 const calculator = document.querySelector(".calculator");
+const clearButton = document.getElementById("clear");
+const decimalButton = document.getElementById("decimal");
+const deleteButton = document.getElementById("delete");
+const digitButtons = calculator.querySelectorAll(".digit");
+const display = calculator.querySelector(".display");
+const equalsButton = document.getElementById("equals");
+const percentButton = document.getElementById("percent");
+const operatorButtons = calculator.querySelectorAll(".operator");
 
 let previousOperand = "";
 let currentOperand = "";
 let cache = null;
 let operator = null;
 let operatorActive;
+
+/* EVENT LISTENERS */
+clearButton.onclick = clear;
+decimalButton.onclick = appendDecimal;
+deleteButton.onclick = deleteLastDigit;
+equalsButton.onclick = equals;
+percentButton.onclick = calculatePercent;
+
+digitButtons.forEach(
+  (button) => (button.onclick = () => appendDigit(button.textContent))
+);
+
+operatorButtons.forEach((button) => {
+  button.onclick = () => {
+    disableOperatorHighlight();
+    button.classList.add("active");
+    operatorActive = true;
+    setOperator(button.textContent);
+  };
+});
 
 /* OPERATIONS */
 const add = () => previousOperand + currentOperand;
@@ -52,13 +80,9 @@ function round(num) {
 }
 
 function sanitizeOutput() {
-  currentOperand = round(currentOperand);
-  if (currentOperand > NUMBER_MAX) {
-    currentOperand = NUMBER_MAX;
-  } else if (currentOperand < NUMBER_MIN) {
-    currentOperand = NUMBER_MIN;
-  }
-  currentOperand = currentOperand.toString();
+  currentOperand = Math.max(NUMBER_MIN, currentOperand);
+  currentOperand = Math.min(NUMBER_MAX, currentOperand);
+  currentOperand = round(currentOperand).toString();
 }
 
 function operate() {
@@ -74,8 +98,6 @@ function operate() {
 }
 
 /* DISPLAY */
-const display = calculator.querySelector(".display");
-
 function shrinkText() {
   if (display.textContent.length > OPERAND_MAX_LENGTH) {
     display.classList.add("shrink");
@@ -93,15 +115,13 @@ function updateDisplay() {
   let newValue = currentOperand === "" ? "0" : currentOperand;
   display.textContent = addCommaSeparators(newValue);
   shrinkText();
+  // don't toggle the clear text if we just cleared
   if (newValue !== "0") {
     toggleClearDisplay();
   }
 }
 
 /* SPECIAL */
-const clearButton = document.getElementById("clear");
-clearButton.onclick = clear;
-
 function toggleClearDisplay() {
   clearButton.textContent = "C";
 }
@@ -116,17 +136,11 @@ function clear() {
   updateDisplay();
 }
 
-const deleteButton = document.getElementById("delete");
-deleteButton.onclick = deleteLastDigit;
-
 function deleteLastDigit() {
   if (currentOperand.length < 2) return;
   currentOperand = currentOperand.slice(0, -1);
   updateDisplay();
 }
-
-const percentButton = document.getElementById("percent");
-percentButton.onclick = calculatePercent;
 
 function calculatePercent() {
   if (isEmpty(currentOperand)) {
@@ -142,9 +156,6 @@ function calculatePercent() {
 }
 
 /* OPERATORS */
-const equalsButton = document.getElementById("equals");
-equalsButton.onclick = equals;
-
 function handleCache() {
   if (!cache) {
     // don't chain when the users hits equals followed by an operator
@@ -172,16 +183,6 @@ function equals() {
   pushOperands();
 }
 
-const operatorButtons = calculator.querySelectorAll(".operator");
-operatorButtons.forEach((button) => {
-  button.onclick = () => {
-    disableOperatorHighlight();
-    button.classList.add("active");
-    operatorActive = true;
-    setOperator(button.textContent);
-  };
-});
-
 function disableOperatorHighlight() {
   if (!operatorActive) return;
   operatorButtons.forEach((button) => button.classList.remove("active"));
@@ -198,11 +199,6 @@ function setOperator(newOperator) {
 }
 
 /* DIGITS */
-const digitButtons = calculator.querySelectorAll(".digit");
-digitButtons.forEach(
-  (button) => (button.onclick = () => appendDigit(button.textContent))
-);
-
 function isEmpty(str) {
   return str === "" || str === 0 || str == "0";
 }
@@ -220,9 +216,6 @@ function appendDigit(number) {
   }
   updateDisplay();
 }
-
-const decimalButton = document.getElementById("decimal");
-decimalButton.onclick = appendDecimal;
 
 function appendDecimal() {
   disableOperatorHighlight();
