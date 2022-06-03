@@ -67,6 +67,7 @@ function keyboardInput(key) {
     case "*": return operatorPressed(multiplyButton);
     case "-": return operatorPressed(minusButton);
     case "+": return operatorPressed(plusButton);
+    case ".": return appendDecimal();
     case "=":
     case "Enter": return equals();
     default: return;
