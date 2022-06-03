@@ -137,6 +137,8 @@ function equals() {
   if (operatorActive) {
     // chain current operand if operator was pressed immediately prior to equals
     currentOperand = previousOperand;
+  } else if (currentOperand === "" && operator !== null) {
+    currentOperand = 0;
   }
   disableOperatorHighlight();
   handleCache();
@@ -205,7 +207,7 @@ function clear() {
 }
 
 function deleteLastDigit() {
-  if (currentOperand.length < 2) return;
+  if (currentOperand.length < 1) return;
   currentOperand = currentOperand.slice(0, -1);
   updateDisplay();
 }
