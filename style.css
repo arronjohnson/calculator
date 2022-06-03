@@ -93,9 +93,10 @@ footer .icons {
   display: flex;
 }
 
-.operator {
+.operator,
+#equals {
   background-color: #f2a33b;
-  font-size: 1.7rem;
+  font-size: 2rem;
 }
 
 .operator.active {
@@ -124,7 +125,8 @@ footer .icons {
     transform: scale(0.96);
   }
 
-  .operator:hover {
+  .operator:hover,
+  #equals:hover {
     background-color: #f2c996;
   }
 
@@ -136,6 +138,10 @@ footer .icons {
 @media (hover: none) {
   button.pressed {
     background-color: #737373;
+  }
+
+  #equals.pressed {
+    background-color: #f2c996;
   }
 
   .special.pressed {
