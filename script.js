@@ -3,6 +3,7 @@ const NUMBER_MAX = 999999999;
 const OPERAND_MAX_LENGTH = 8;
 
 const calculator = document.querySelector(".calculator");
+const allButtons = document.querySelectorAll("button");
 const clearButton = document.getElementById("clear");
 const decimalButton = document.getElementById("decimal");
 const deleteButton = document.getElementById("delete");
@@ -19,11 +20,24 @@ let operator = null;
 let operatorActive;
 
 /* EVENT LISTENERS */
+const addHighlight = (button) => button.classList.add("pressed");
+const removeHighlight = (button) => button.classList.remove("pressed");
+
 clearButton.addEventListener("click", clear);
 decimalButton.addEventListener("click", appendDecimal);
 deleteButton.addEventListener("click", deleteLastDigit);
 equalsButton.addEventListener("click", equals);
 percentButton.addEventListener("click", calculatePercent);
+
+// simulate hover behavior on touch devices
+allButtons.forEach((button) => {
+  if (!button.classList.contains("operator")) {
+    button.addEventListener("touchstart", () => addHighlight(button));
+    button.addEventListener("touchend", () =>
+      setTimeout(() => removeHighlight(button), 100)
+    );
+  }
+});
 
 digitButtons.forEach((button) =>
   button.addEventListener("click", () => appendDigit(button.textContent))

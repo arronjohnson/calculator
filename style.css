@@ -42,14 +42,6 @@ button {
   width: 70px;
 }
 
-button:hover {
-  background-color: #737373;
-}
-
-button:active {
-  transform: scale(0.96);
-}
-
 header {
   margin: 16px 0;
 }
@@ -106,10 +98,6 @@ footer .icons {
   font-size: 1.7rem;
 }
 
-.operator:hover {
-  background-color: #f2c996;
-}
-
 .operator.active {
   background-color: white;
   color: #f2a33c;
@@ -120,15 +108,39 @@ footer .icons {
   color: #000;
 }
 
-.special:hover {
-  background-color: #d9d9d9;
-}
-
 #zero {
   border-radius: 50px;
   text-align: left;
   text-indent: 29px;
   width: 150px;
+}
+
+@media (hover: hover) {
+  button:hover {
+    background-color: #737373;
+  }
+
+  button:active {
+    transform: scale(0.96);
+  }
+
+  .operator:hover {
+    background-color: #f2c996;
+  }
+
+  .special:hover {
+    background-color: #d9d9d9;
+  }
+}
+
+@media (hover: none) {
+  button.pressed {
+    background-color: #737373;
+  }
+
+  .special.pressed {
+    background-color: #d9d9d9;
+  }
 }
 
 @media (max-width: 600px) {
