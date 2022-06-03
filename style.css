@@ -125,3 +125,37 @@ footer .icons {
   text-indent: 29px;
   width: 150px;
 }
+
+@media (max-width: 600px) {
+  main {
+    margin-bottom: 16px;
+  }
+
+  button {
+    font-size: 1.25rem;
+    height: 60px;
+    width: 60px;
+  }
+
+  .calculator {
+    height: 520px;
+    width: 310px;
+  }
+
+  .display {
+    width: 240px;
+  }
+
+  #zero {
+    text-indent: 25px;
+    width: 130px;
+  }
+
+  footer p {
+    font-size: 1.1rem;
+  }
+
+  footer .icons {
+    font-size: 2rem;
+  }
+}
