@@ -85,6 +85,10 @@ footer .icons {
   width: 270px;
 }
 
+.display.shrink {
+  font-size: 2.5rem;
+}
+
 .row {
   display: flex;
 }

@@ -1,4 +1,3 @@
-const FONT_SIZE_SMALLER = "2.5rem";
 const NUMBER_MIN = -999999999;
 const NUMBER_MAX = 999999999;
 const OPERAND_MAX_LENGTH = 8;
@@ -79,9 +78,9 @@ const display = calculator.querySelector(".display");
 
 function shrinkText() {
   if (display.textContent.length > OPERAND_MAX_LENGTH) {
-    display.style.fontSize = FONT_SIZE_SMALLER;
+    display.classList.add("shrink");
   } else {
-    display.removeAttribute("style");
+    display.classList.remove("shrink");
   }
 }
 
