@@ -129,7 +129,12 @@ function shrinkText() {
 }
 
 function addCommaSeparators(str) {
-  return str.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+  let decimals = "";
+  const decimalIndex = str.indexOf(".");
+  if (decimalIndex > 0) {
+    decimals = str.slice(decimalIndex);
+  }
+  return parseInt(str).toLocaleString() + decimals;
 }
 
 function updateDisplay() {
