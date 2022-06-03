@@ -2,15 +2,19 @@ const NUMBER_MIN = -999999999;
 const NUMBER_MAX = 999999999;
 const OPERAND_MAX_LENGTH = 8;
 
-const calculator = document.querySelector(".calculator");
 const allButtons = document.querySelectorAll("button");
+const calculator = document.querySelector(".calculator");
 const clearButton = document.getElementById("clear");
 const decimalButton = document.getElementById("decimal");
 const deleteButton = document.getElementById("delete");
 const digitButtons = calculator.querySelectorAll(".digit");
 const display = calculator.querySelector(".display");
+const divideButton = document.getElementById("divide");
 const equalsButton = document.getElementById("equals");
+const minusButton = document.getElementById("minus");
+const multiplyButton = document.getElementById("multiply");
 const percentButton = document.getElementById("percent");
+const plusButton = document.getElementById("plus");
 const operatorButtons = calculator.querySelectorAll(".operator");
 
 let previousOperand = "";
@@ -26,6 +30,7 @@ const removeHighlight = (button) => button.classList.remove("pressed");
 clearButton.addEventListener("click", clear);
 decimalButton.addEventListener("click", appendDecimal);
 deleteButton.addEventListener("click", deleteLastDigit);
+document.addEventListener("keydown", (e) => keyboardInput(e.key));
 equalsButton.addEventListener("click", equals);
 percentButton.addEventListener("click", calculatePercent);
 
@@ -46,6 +51,27 @@ digitButtons.forEach((button) =>
 operatorButtons.forEach((button) =>
   button.addEventListener("click", () => operatorPressed(button))
 );
+
+/* KEYBOARD */
+function keyboardInput(key) {
+  if (key >= 0 && key <= 9) {
+    return appendDigit(key);
+  }
+
+  // prettier-ignore
+  switch (key) {
+    case "Escape": return clear();
+    case "Backspace": return deleteLastDigit();
+    case "%": return calculatePercent();
+    case "/": return operatorPressed(divideButton);
+    case "*": return operatorPressed(multiplyButton);
+    case "-": return operatorPressed(minusButton);
+    case "+": return operatorPressed(plusButton);
+    case "=":
+    case "Enter": return equals();
+    default: return;
+  }
+}
 
 /* OPERATIONS */
 const add = () => previousOperand + currentOperand;
