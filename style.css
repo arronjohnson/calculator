@@ -97,12 +97,12 @@ footer .icons {
 }
 
 .operator {
-  background-color: hwb(34 23% 5%);
+  background-color: #f2a33b;
   font-size: 1.7rem;
 }
 
 .operator:hover {
-  background-color: hwb(33 59% 5%);
+  background-color: #f2c996;
 }
 
 .operator.active {

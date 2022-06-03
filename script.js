@@ -19,24 +19,19 @@ let operator = null;
 let operatorActive;
 
 /* EVENT LISTENERS */
-clearButton.onclick = clear;
-decimalButton.onclick = appendDecimal;
-deleteButton.onclick = deleteLastDigit;
-equalsButton.onclick = equals;
-percentButton.onclick = calculatePercent;
+clearButton.addEventListener("click", clear);
+decimalButton.addEventListener("click", appendDecimal);
+deleteButton.addEventListener("click", deleteLastDigit);
+equalsButton.addEventListener("click", equals);
+percentButton.addEventListener("click", calculatePercent);
 
-digitButtons.forEach(
-  (button) => (button.onclick = () => appendDigit(button.textContent))
+digitButtons.forEach((button) =>
+  button.addEventListener("click", () => appendDigit(button.textContent))
 );
 
-operatorButtons.forEach((button) => {
-  button.onclick = () => {
-    disableOperatorHighlight();
-    button.classList.add("active");
-    operatorActive = true;
-    setOperator(button.textContent);
-  };
-});
+operatorButtons.forEach((button) =>
+  button.addEventListener("click", () => operatorPressed(button))
+);
 
 /* OPERATIONS */
 const add = () => previousOperand + currentOperand;
@@ -95,6 +90,33 @@ function operate() {
   currentOperand = compute();
   sanitizeOutput();
   updateDisplay();
+}
+
+function equals() {
+  if (operatorActive) {
+    // chain current operand if operator was pressed immediately prior to equals
+    currentOperand = previousOperand;
+  }
+  disableOperatorHighlight();
+  handleCache();
+  operate();
+  operator = null;
+  pushOperands();
+}
+
+function handleCache() {
+  if (!cache) {
+    // don't chain when the users hits equals followed by an operator
+    if (currentOperand !== "") {
+      cache = [currentOperand, operator];
+    }
+    return;
+  }
+  pushOperands();
+  operator = cache[1];
+  if (currentOperand === "") {
+    currentOperand = cache[0];
+  }
 }
 
 /* DISPLAY */
@@ -156,31 +178,11 @@ function calculatePercent() {
 }
 
 /* OPERATORS */
-function handleCache() {
-  if (!cache) {
-    // don't chain when the users hits equals followed by an operator
-    if (currentOperand !== "") {
-      cache = [currentOperand, operator];
-    }
-    return;
-  }
-  pushOperands();
-  operator = cache[1];
-  if (currentOperand === "") {
-    currentOperand = cache[0];
-  }
-}
-
-function equals() {
-  if (operatorActive) {
-    // chain current operand if operator was pressed immediately prior to equals
-    currentOperand = previousOperand;
-  }
+function operatorPressed(button) {
   disableOperatorHighlight();
-  handleCache();
-  operate();
-  operator = null;
-  pushOperands();
+  button.classList.add("active");
+  operatorActive = true;
+  setOperator(button.textContent);
 }
 
 function disableOperatorHighlight() {
