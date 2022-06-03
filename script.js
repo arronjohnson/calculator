@@ -1,8 +1,7 @@
-const DISPLAY_SHRINK_LENGTH = 8;
 const FONT_SIZE_SMALLER = "2.5rem";
 const NUMBER_MIN = -999999999;
 const NUMBER_MAX = 999999999;
-const OPERAND_MAX_LENGTH = 9;
+const OPERAND_MAX_LENGTH = 8;
 
 const calculator = document.querySelector(".calculator");
 
@@ -60,6 +59,7 @@ function sanitizeOutput() {
   } else if (currentOperand < NUMBER_MIN) {
     currentOperand = NUMBER_MIN;
   }
+  currentOperand = currentOperand.toString();
 }
 
 function operate() {
@@ -78,7 +78,7 @@ function operate() {
 const display = calculator.querySelector(".display");
 
 function shrinkText() {
-  if (display.textContent.length > DISPLAY_SHRINK_LENGTH) {
+  if (display.textContent.length > OPERAND_MAX_LENGTH) {
     display.style.fontSize = FONT_SIZE_SMALLER;
   } else {
     display.removeAttribute("style");
@@ -91,16 +91,24 @@ function addCommaSeparators(str) {
 
 function updateDisplay() {
   // always display something
-  let newValue = currentOperand === "" ? 0 : currentOperand;
-  display.textContent = addCommaSeparators(newValue.toString());
+  let newValue = currentOperand === "" ? "0" : currentOperand;
+  display.textContent = addCommaSeparators(newValue);
   shrinkText();
+  if (newValue !== "0") {
+    toggleClearDisplay();
+  }
 }
 
 /* SPECIAL */
 const clearButton = document.getElementById("clear");
 clearButton.onclick = clear;
 
+function toggleClearDisplay() {
+  clearButton.textContent = "C";
+}
+
 function clear() {
+  clearButton.textContent = "AC";
   disableOperatorHighlight();
   previousOperand = "";
   currentOperand = "";
@@ -114,7 +122,23 @@ deleteButton.onclick = deleteLastDigit;
 
 function deleteLastDigit() {
   if (currentOperand.length < 2) return;
-  currentOperand = currentOperand.toString().slice(0, -1);
+  currentOperand = currentOperand.slice(0, -1);
+  updateDisplay();
+}
+
+const percentButton = document.getElementById("percent");
+percentButton.onclick = calculatePercent;
+
+function calculatePercent() {
+  if (isEmpty(currentOperand)) {
+    currentOperand = previousOperand;
+  }
+  if (operator === "+" || operator === "-") {
+    currentOperand = (previousOperand / 100) * currentOperand;
+  } else {
+    currentOperand = currentOperand / 100;
+  }
+  sanitizeOutput();
   updateDisplay();
 }
 
@@ -180,15 +204,15 @@ digitButtons.forEach(
   (button) => (button.onclick = () => appendDigit(button.textContent))
 );
 
-function isEmpty(operand) {
-  return operand === "" || operand === 0;
+function isEmpty(str) {
+  return str === "" || str === 0 || str == "0";
 }
 
 function appendDigit(number) {
   disableOperatorHighlight();
   // don't allow consecutive zeroes
-  if (currentOperand === "0" && number == 0) return;
-  if (currentOperand.replace(".", "").length === OPERAND_MAX_LENGTH) return;
+  if (currentOperand === "0" && number === 0) return;
+  if (currentOperand.replace(".", "").length > OPERAND_MAX_LENGTH) return;
   // overwrite zero if it's the starting number
   if (isEmpty(currentOperand)) {
     currentOperand = number.toString();
@@ -203,7 +227,7 @@ decimalButton.onclick = appendDecimal;
 
 function appendDecimal() {
   disableOperatorHighlight();
-  if (currentOperand.length > OPERAND_MAX_LENGTH - 1) return;
+  if (currentOperand.length > OPERAND_MAX_LENGTH) return;
   if (currentOperand.includes(".")) return;
   if (isEmpty(currentOperand)) {
     currentOperand = "0.";
