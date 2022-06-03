@@ -134,7 +134,7 @@ function addCommaSeparators(str) {
   if (decimalIndex > 0) {
     decimals = str.slice(decimalIndex);
   }
-  return parseInt(str).toLocaleString() + decimals;
+  return parseInt(str).toLocaleString("en-GB") + decimals;
 }
 
 function updateDisplay() {
